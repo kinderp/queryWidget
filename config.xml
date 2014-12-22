@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Template xmlns="http://wirecloud.conwet.fi.upm.es/ns/template#">
+	<Catalog.ResourceDescription>
+		<Vendor>Arkimede</Vendor>
+		<Name>EntityDispatcherByService</Name>
+		<DisplayName>Query Widget</DisplayName>
+		<Author>Gioak</Author>
+		<Version>0.4.0</Version>
+		<Mail>gioakbombaci@gmail.com</Mail>
+		<Description>This widget receives in input a "Service" entity and it creates a query to retrieves all of entity with attribute "name" = "Service" and attribute "type" = Service's id</Description>
+		<ImageURI>images/catalogue.png</ImageURI>
+		<iPhoneImageURI>images/catalogue.png</iPhoneImageURI>
+		<WikiURI></WikiURI>
+		<Requirements>
+			<Feature name="NGSI"/>
+		</Requirements>
+	</Catalog.ResourceDescription>
+	<Platform.Preferences>
+		<Preference name="ngsi_server" type="text" description="server che contiene la lista dei servizi" label="NGSI Server" default="http://130.206.85.25:1026/"></Preference>
+		<Preference name="service_id" type="text" description="id del servizio che si vuole cercare tra gli attributi di tutte le entità dell'istanza di Orion in NGSI Server" label="Service ID" default="Service1"></Preference>
+	</Platform.Preferences>
+	<Platform.StateProperties>
+	</Platform.StateProperties>
+	<Platform.Wiring>
+		<InputEndpoint name="InputEntity" type="text" description="It gets Service entities in input" label="Service Entity" friendcode="entity"></InputEndpoint>
+		<OutputEndpoint name="OutputEntities" type="text" description="A list of entities that have an attribute type Service_id" label="ListOfEntities" friendcode="entities"></OutputEndpoint>
+	</Platform.Wiring>
+	<Platform.Link>
+		<XHTML href="index.html" contenttype="text/html" cacheable="false" use-platform-style="true"/>
+	</Platform.Link>
+	<Platform.Rendering width="5" height="12"/>
+</Template>
