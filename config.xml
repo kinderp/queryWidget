@@ -5,7 +5,7 @@
 		<Name>EntityDispatcherByService</Name>
 		<DisplayName>Query Widget</DisplayName>
 		<Author>Gioak</Author>
-		<Version>0.4.0</Version>
+		<Version>0.4.3</Version>
 		<Mail>gioakbombaci@gmail.com</Mail>
 		<Description>This widget receives in input a "Service" entity and it creates a query to retrieves all of entity with attribute "name" = "Service" and attribute "type" = Service's id</Description>
 		<ImageURI>images/catalogue.png</ImageURI>

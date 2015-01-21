@@ -5,7 +5,7 @@
 
 	"use strict";
 	
-	var taxi_attributes = ['id','type','taxiPosition'];
+	var taxi_attributes = ['id','type','position'];
 	var id_query = 0; /* ad ogni query viene assegnato un id */
 	var listDataQuery = []; /* contiene le response di tutte le query ordinate per idquery*/
 
@@ -109,7 +109,7 @@
 	var doQuery = function doQuery(){
 		
 		var servID = this.serviceId;
-		var position = "taxiPosition";
+		var position = "position";
 		
 		this.connection.query([{
 				type : "",
@@ -208,28 +208,55 @@
 			taxiID = entity.id;
 			taxiType = entity.type;
 			
+			var ent_ID = entity.id;
+			var ent_Type = entity.type;
+			
 			//new code test
-			var position = "taxiPosition";
+			var position = "position";
 			var temperature = "temperature";
 			var pressure = "pressure";
 			var pm10 = "PM10";
-			this.connection.query([{
-				type : taxiType,
-				isPattern : false,
-				id : taxiID
-			}],
-			[
-				 this.serviceId,
-				 position,
-				 temperature,
-				 pressure,
-				 pm10
-			],
-			{
-				flat : true,
-				onSuccess: onQuerySuccess1.bind(this),
-				onFailure: onQueryFail1.bind(this)
-			});
+			
+			if(ent_Type == "Taxi"){
+				this.connection.query([{
+					type : ent_Type,
+					isPattern : false,
+					id : ent_ID
+				}],
+				[
+					 this.serviceId,
+					 position
+				],
+
+				{
+					flat : true,
+					onSuccess: onQuerySuccess1.bind(this),
+					onFailure: onQueryFail1.bind(this)
+				});
+			}
+			
+			else{
+				this.connection.query([{
+					type : ent_Type,
+					isPattern : false,
+					id : ent_ID
+				}],
+				/*
+				[
+					 this.serviceId,
+					 position,
+					 temperature,
+					 pressure,
+					 pm10
+				],
+				*/
+				null,
+				{
+					flat : true,
+					onSuccess: onQuerySuccess1.bind(this),
+					onFailure: onQueryFail1.bind(this)
+				});
+			}
 			//end new code test
 			
 			//MashupPlatform.wiring.pushEvent("OutputEntities", entity);
@@ -239,11 +266,14 @@
 	};
 	
 	var onQuerySuccess1 = function onQuerySuccess1(data1){
-		var taxiEntity = "";
+		//var taxiEntity = "";
+		var Entity = "";
 		for(var attr1 in data1){
-		taxiEntity = JSON.stringify(data1[attr1]);
+		//taxiEntity = JSON.stringify(data1[attr1]);
+		Entity = JSON.stringify(data1[attr1]);
 		
-		MashupPlatform.wiring.pushEvent("OutputEntities", taxiEntity);
+		//MashupPlatform.wiring.pushEvent("OutputEntities", taxiEntity);
+		MashupPlatform.wiring.pushEvent("OutputEntities", Entity);
 		}
 	};
 	
