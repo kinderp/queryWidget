@@ -75,6 +75,7 @@
 		var divText = document.createTextNode(conn);
 		this.contenitore.appendChild(divText);
 		*/
+		this.serviceId = MashupPlatform.prefs.get('service_id');
 		doQuery.call(this);
 	};
 	
@@ -168,6 +169,20 @@
 		//richiamo la updateTableOutPut()
 		
 		updateTableOutPut.call(this, oneElement);
+		
+		//prima di fare la query per le nuove entita', invio il comando di eliminazione delle 
+		//vecchie entità nella mappa
+		if(id_query > 1)
+		{
+			var id_del = id_query-1;
+			var old_data = listDataQuery[id_del];
+			for(var e in old_data.response)
+			{
+				var entity_to_del = old_data.response[e];
+				var json_entity = JSON.stringify(entity_to_del);
+				MashupPlatform.wiring.pushEvent("OutputEntitiesDel", json_entity);
+			}
+		}
 		/*
 		for(var i in data)
 		{
@@ -266,14 +281,25 @@
 	};
 	
 	var onQuerySuccess1 = function onQuerySuccess1(data1){
-		//var taxiEntity = "";
+		var taxiEntity = "";
 		var Entity = "";
 		for(var attr1 in data1){
-		//taxiEntity = JSON.stringify(data1[attr1]);
-		Entity = JSON.stringify(data1[attr1]);
-		
-		//MashupPlatform.wiring.pushEvent("OutputEntities", taxiEntity);
-		MashupPlatform.wiring.pushEvent("OutputEntities", Entity);
+			
+			taxiEntity = JSON.stringify(data1[attr1]);
+			/*devo aggiornare le entita' nella lista
+			 *in quanto la prima query valorizza solamento il campo Service 
+			 *la seconda query prende tutti gli altri valori, anche la posizione
+			 *che e' indispensabile per la cancellazione dell'entita' nella mappa
+			 *att1 = id entita, data1[attr1] oggetto entita' nella lista
+			 */
+			var response = listDataQuery[id_query].response;
+			var element_to_update = response[attr1];
+			delete listDataQuery[id_query].response[attr1];
+			listDataQuery[id_query].response[attr1] = data1[attr1];
+			Entity = JSON.stringify(data1[attr1]);
+			
+			//MashupPlatform.wiring.pushEvent("OutputEntities", taxiEntity);
+			MashupPlatform.wiring.pushEvent("OutputEntities", Entity);
 		}
 	};
 	
